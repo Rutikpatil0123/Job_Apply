@@ -83,3 +83,110 @@ The automation is scheduled to run every morning at 9:00 AM:
 0 9 * * * /Users/rutikpatil/Documents/GitHub/Job_Apply/daily_runner.sh
 ```
 Logs are saved to `automation.log`, and previously processed job IDs are tracked in `processed_job_ids.json` to prevent duplicates.
+
+---
+
+## ✉️ Part 2: Automated Gmail Drafting
+
+After jobs are collected, the system automatically drafts tailored application emails and saves them to your **Gmail Drafts** folder. You review and send each draft yourself.
+
+### How It Works
+- **Gemini AI** generates a personalized, role-specific email for each job
+- Falls back to a professional template if AI is unavailable
+- Attaches `resume.pdf` if it exists in the project root
+- Tracks drafted job IDs in `drafted_jobs.json` — no duplicates across runs
+- Never sends emails — only saves Drafts for your review
+
+### Prerequisites
+Add Gmail credentials to `.env`:
+```env
+GMAIL_ADDRESS=Rutikpatil0123@gmail.com
+GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx   # 16-char Google App Password
+RESUME_PATH=resume.pdf                    # Optional: path to your resume PDF
+```
+> **How to get a Google App Password**: Google Account → Security → 2-Step Verification → App Passwords → Mail → Generate
+
+---
+
+### Option A — Batch CLI (Automatic Daily Drafts)
+
+Runs automatically as part of `daily_runner.sh` every morning. Also runnable manually:
+
+```bash
+# Draft top 10 jobs with score ≥ 70% (default)
+python draft_applications.py
+
+# Preview emails without saving to Gmail
+python draft_applications.py --dry-run --limit 5
+
+# Custom filters
+python draft_applications.py --market India --min-score 80 --limit 20
+
+# Specify a CSV manually
+python draft_applications.py --csv linkedin_jobs_2026-10-22.csv --limit 5
+```
+
+**Options:**
+
+| Flag | Default | Description |
+|---|---|---|
+| `--csv` | Latest `linkedin_jobs_*.csv` | CSV file to read jobs from |
+| `--limit` | `10` | Max number of drafts to create |
+| `--min-score` | `70` | Minimum match score % |
+| `--market` | `all` | `India` / `International Big Tech` / `all` |
+| `--resume` | `resume.pdf` | Path to resume to attach |
+| `--dry-run` | off | Preview emails without saving |
+
+---
+
+### Option B — In-Chat MCP Tools (Interactive)
+
+Talk to Antigravity in chat to draft specific applications on demand.
+
+**Setup (one-time):**
+```bash
+bash setup_mcp.sh       # Registers the MCP server
+# Then restart Antigravity (agy reload)
+```
+
+**Available in-chat commands:**
+
+| Tool | Example Usage |
+|---|---|
+| `list_available_jobs` | Show today's top undrafted matches |
+| `preview_email_draft` | Preview the email for job_id `3956189234` |
+| `draft_job_application` | Save a Gmail Draft for job_id `3956189234` |
+
+Example chat flow:
+```
+You:  list_available_jobs limit=10 market=India
+AGY:  [shows table of top India jobs with scores]
+
+You:  preview_email_draft job_id=3956189234
+AGY:  [shows full email text — no Gmail write]
+
+You:  draft_job_application job_id=3956189234
+AGY:  ✅ Gmail Draft saved! Open Drafts to review.
+```
+
+---
+
+## 📁 File Map
+
+| File | Purpose |
+|---|---|
+| `main.py` | Part 1 — Job collection CLI |
+| `scraper.py` | LinkedIn guest API scraper |
+| `extractor.py` | Gemini AI job detail extractor |
+| `recruiter_finder.py` | Recruiter email discovery (Clearbit + Hunter.io) |
+| `csv_exporter.py` | Daily CSV export |
+| `history.py` | Cross-day deduplication |
+| `draft_applications.py` | Part 2 — Batch Gmail Draft CLI |
+| `email_generator.py` | Gemini AI + template email generator |
+| `gmail_drafter.py` | IMAP Gmail Drafts writer |
+| `draft_manager.py` | Tracks drafted job IDs |
+| `mcp_gmail_server.py` | FastMCP server for in-chat drafting |
+| `daily_runner.sh` | Chains Part 1 + Part 2 for LaunchAgent/cron |
+| `setup_mcp.sh` | One-time MCP server registration |
+| `config.py` | Central configuration |
+| `.env.example` | Environment variable template |
