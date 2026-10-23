@@ -7,10 +7,10 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/rutikpatil/Documents/GitHub/Job_Apply/daily_runner.sh</string>
+        <string>/Users/rutikpatil/Projects/Job_Apply/daily_runner.sh</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/rutikpatil/Documents/GitHub/Job_Apply</string>
+    <string>/Users/rutikpatil/Projects/Job_Apply</string>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
@@ -19,8 +19,8 @@
         <integer>0</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/rutikpatil/Documents/GitHub/Job_Apply/launchd_output.log</string>
+    <string>/Users/rutikpatil/Projects/Job_Apply/launchd_output.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/rutikpatil/Documents/GitHub/Job_Apply/launchd_error.log</string>
+    <string>/Users/rutikpatil/Projects/Job_Apply/launchd_error.log</string>
 </dict>
 </plist>

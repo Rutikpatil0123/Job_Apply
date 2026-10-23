@@ -27,8 +27,9 @@ if [ ! -f "$SERVER_SCRIPT" ]; then
   exit 1
 fi
 
-# Verify mcp package is importable using venv python
-if ! "$PYTHON_BIN" -c "import mcp; print('mcp ok')" 2>/dev/null | grep -q "mcp ok"; then
+# Import the server module so its Python 3.14 / Pydantic compatibility shim
+# runs before the MCP SDK is imported.
+if ! PYTHONPATH="$PROJECT_DIR" "$PYTHON_BIN" -c "import mcp_gmail_server; print('mcp ok')" 2>/dev/null | grep -q "mcp ok"; then
   echo "❌  mcp package not installed in venv."
   echo "    Run:  $PYTHON_BIN -m pip install 'mcp>=1.0.0'"
   exit 1

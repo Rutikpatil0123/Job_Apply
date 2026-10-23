@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_DIR="/Users/rutikpatil/Documents/GitHub/Job_Apply"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUNNER_SCRIPT="$PROJECT_DIR/daily_runner.sh"
 
 chmod +x "$RUNNER_SCRIPT"

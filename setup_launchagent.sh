@@ -1,7 +1,8 @@
 #!/bin/bash
 
 PLIST_NAME="com.rutik.jobapply.plist"
-SOURCE_PLIST="/Users/rutikpatil/Documents/GitHub/Job_Apply/$PLIST_NAME"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_PLIST="$PROJECT_DIR/$PLIST_NAME"
 TARGET_DIR="$HOME/Library/LaunchAgents"
 TARGET_PLIST="$TARGET_DIR/$PLIST_NAME"
 

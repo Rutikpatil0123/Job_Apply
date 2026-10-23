@@ -40,7 +40,7 @@ The generated CSV file contains 16 comprehensive fields:
 
 1. **Activate Virtual Environment**:
    ```bash
-   cd /Users/rutikpatil/Documents/GitHub/Job_Apply
+   cd ~/Projects/Job_Apply
    source venv/bin/activate
    pip install -r requirements.txt
    ```
@@ -80,7 +80,7 @@ python main.py --india-limit 40 --intl-limit 10
 ### Automatic Daily Schedule (macOS Cron):
 The automation is scheduled to run every morning at 9:00 AM:
 ```cron
-0 9 * * * /Users/rutikpatil/Documents/GitHub/Job_Apply/daily_runner.sh
+0 9 * * * ~/Projects/Job_Apply/daily_runner.sh
 ```
 Logs are saved to `automation.log`, and previously processed job IDs are tracked in `processed_job_ids.json` to prevent duplicates.
 
@@ -88,7 +88,7 @@ Logs are saved to `automation.log`, and previously processed job IDs are tracked
 
 ## ✉️ Part 2: Automated Gmail Drafting
 
-After jobs are collected, the system automatically drafts tailored application emails and saves them to your **Gmail Drafts** folder. You review and send each draft yourself.
+After jobs are collected, the system drafts tailored application emails and saves them to your **Gmail Drafts** folder. The daily runner processes all jobs in the CSV (up to 50); you review and send each draft yourself. Gmail credentials must be configured in `.env` before drafts can be saved.
 
 ### How It Works
 - **Gemini AI** generates a personalized, role-specific email for each job
@@ -100,7 +100,7 @@ After jobs are collected, the system automatically drafts tailored application e
 ### Prerequisites
 Add Gmail credentials to `.env`:
 ```env
-GMAIL_ADDRESS=Rutikpatil0123@gmail.com
+GMAIL_ADDRESS=your_email@gmail.com
 GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx   # 16-char Google App Password
 RESUME_PATH=resume.pdf                    # Optional: path to your resume PDF
 ```
@@ -110,11 +110,11 @@ RESUME_PATH=resume.pdf                    # Optional: path to your resume PDF
 
 ### Option A — Batch CLI (Automatic Daily Drafts)
 
-Runs automatically as part of `daily_runner.sh` every morning. Also runnable manually:
+Runs automatically as part of `daily_runner.sh` every morning and drafts all jobs from the latest CSV (up to 50, with no minimum score). Also runnable manually:
 
 ```bash
-# Draft top 10 jobs with score ≥ 70% (default)
-python draft_applications.py
+# Draft all jobs from the latest CSV, regardless of score (up to 50)
+python draft_applications.py --limit 50 --min-score 0
 
 # Preview emails without saving to Gmail
 python draft_applications.py --dry-run --limit 5
@@ -131,7 +131,7 @@ python draft_applications.py --csv linkedin_jobs_2026-10-22.csv --limit 5
 | Flag | Default | Description |
 |---|---|---|
 | `--csv` | Latest `linkedin_jobs_*.csv` | CSV file to read jobs from |
-| `--limit` | `10` | Max number of drafts to create |
+| `--limit` | `10` | Max number of drafts to create (daily runner uses `50`) |
 | `--min-score` | `70` | Minimum match score % |
 | `--market` | `all` | `India` / `International Big Tech` / `all` |
 | `--resume` | `resume.pdf` | Path to resume to attach |

@@ -9,12 +9,25 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 # Optional Recruiter Enrichment API (e.g. Hunter.io free tier: 25 searches/month)
 HUNTER_API_KEY = os.getenv("HUNTER_API_KEY", "")
 
+# Gmail Configuration for Drafting Applications
+GMAIL_ADDRESS = os.getenv("GMAIL_ADDRESS", "")
+GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD", "")
+DEFAULT_RESUME_PATH = os.getenv("RESUME_PATH", "resume.pdf")
+
+# Candidate Master Facts (Rutik Patil)
+CANDIDATE_NAME = "Rutik Patil"
+CANDIDATE_EMAIL = GMAIL_ADDRESS
+CANDIDATE_PHONE = os.getenv("CANDIDATE_PHONE", "")
+CANDIDATE_LINKEDIN = "https://www.linkedin.com/in/rutik-patil"
+CANDIDATE_GITHUB = "https://github.com/Rutikpatil0123"
+
 # Job quota distribution: 40 India + 10 International Big Tech = 50 daily
 DEFAULT_TOTAL_JOBS = int(os.getenv("DEFAULT_TOTAL_JOBS", "50"))
 DEFAULT_INDIA_JOBS = int(os.getenv("DEFAULT_INDIA_JOBS", "40"))
 DEFAULT_INTL_BIG_TECH_JOBS = int(os.getenv("DEFAULT_INTL_BIG_TECH_JOBS", "10"))
 
 HISTORY_FILE_PATH = "processed_job_ids.json"
+DRAFTED_JOBS_FILE = "drafted_jobs.json"
 
 # Search settings for India bucket (40 jobs)
 INDIA_KEYWORDS = ["Data Engineer", "Backend Engineer", "Python Developer", "ETL Engineer"]

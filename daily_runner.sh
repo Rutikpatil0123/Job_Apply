@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Navigate to project directory
-PROJECT_DIR="/Users/rutikpatil/Documents/GitHub/Job_Apply"
+# Navigate to the directory containing this script.
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PROJECT_DIR" || exit 1
 
 LOG_FILE="$PROJECT_DIR/automation.log"
@@ -13,8 +13,8 @@ echo "==========================================" >> "$LOG_FILE"
 echo "--- Part 1: Job Collection ---" >> "$LOG_FILE"
 ./venv/bin/python main.py --india-limit 40 --intl-limit 10 >> "$LOG_FILE" 2>&1
 
-# Part 2: Auto-draft Gmail applications for top matches (top 10 by default)
+# Part 2: Draft application emails for every job in the latest CSV (up to 50)
 echo "--- Part 2: Gmail Draft Applications ---" >> "$LOG_FILE"
-./venv/bin/python draft_applications.py --limit 10 --min-score 70 >> "$LOG_FILE" 2>&1
+./venv/bin/python draft_applications.py --limit 50 --min-score 0 >> "$LOG_FILE" 2>&1
 
 echo "Finished Daily Run: $(date)" >> "$LOG_FILE"
